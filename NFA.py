@@ -6,7 +6,7 @@
 
 def shunt(infix): # Shunting Yard Algorithm - Parses infix notation to postfix notionation
     
-    specials = {'*': 50, '.': 40,'|': 30}   #Operators
+    specials = {'*': 50, '.': 40,'|': 30, '+': 20, '?': 10}   #Operators
     pofix = ""
     stack = ""
 
@@ -88,6 +88,34 @@ def compile(postfix):
             nfa1.accept.edge1 = nfa1.initial
             nfa1.accept.edge2 = accept
             # Push new NFA to the stack
+            nfastack.append(nfa(initial,accept))
+
+		elif c == '+':
+            # Pop a single NFA from the stack
+            nfa1 = nfastack.pop()
+            # Create new initial and accept states
+            initial = state()
+            accept = state()
+            # Join the new initial state to nfa1's initial state and the new accept state
+            initial.edge1 = nfa.initial
+            # Join the old state to the new accept state and the new nfa1's initial state
+			nfa.final.edge1 = nfa.initial
+			nfa.final.edge2 = final
+            # Push new NFA to the stack
+            nfastack.append(nfa(initial,accept))
+			
+			elif p == '?':
+            # Pop only one NFA off the stack for the '?' operator
+            nfa = nfaStack.pop()
+            # Create new initial and final state
+            initial, final = state(), state()
+            # Connect the new initial state to the nfa initial state
+            # Connect the nfa final state to the new final state
+            initial.edge1 = nfa.initial
+			initial.edge2 = final
+            # Connect the nfa final state to the new final state
+            nfa.final.edge1 = final
+            # Create and push a new '?' NFA to the nfaStack
             nfastack.append(nfa(initial,accept))
 
         else:
