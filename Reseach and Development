@@ -1,0 +1,34 @@
+What is a Non-deterministic finite automoton?
+
+In a sentence: "Nondeterminism gives a machine multiple options for its moves"
+For each state in a NFA there can be zero, one, two or more transitions corresponding to a particular 
+symbol. From reading it can be ver hard to imagine what that means. Through the exercises on moodle 
+and on the Youtube video https://www.youtube.com/watch?v=yCZv84tW16s I developed a tight grasp of the 
+concept.
+
+To complete this project I will have to learn of two other concepts:
+  1. Thompson's Construction
+  2. The Shunting Yard Algorithm
+
+--Thompson's construction--
+An algorithm created by Ken Thompson in the 1960's to convert a Regular Expression to a Non-deterministic
+finite automton. The idea is to create smaller NFA's "fragments", manipulate and change them by popping
+and pushing to the stack. Thankfully a full video demenstration was provided https://web.microsoftstream.com/video/946a7826-e536-4295-b050-857975162e6c
+But I also found this video https://www.youtube.com/watch?v=7NA69TEd2iQ that shows how to convert Regular 
+Expression to NFA and then to DFA. Giving a better overall understanding of the concepts as a whole.
+
+--The Shunting Yard Algorithm--
+A simple but powerful algorithm to convert an infix exprssion to a postfix exprssion so the operation
+is readable for a computer. By holding the operators in a stack they can be pushed to the end of the 
+expression. With pen and paper this can be quiet easy but giving the order of precedence and be challening 
+to program. "*", "+", "?", ".", "|" is the order of precedence. Once again, a handy video tutorial is 
+available for the full explanation of each operator. https://web.microsoftstream.com/video/a29536d4-e975-4172-a470-40b4fe28866e
+
+--Some helpful links, some mentioned above--
+https://swtch.com/~rsc/regexp/regexp1.html
+http://www.oxfordmathcenter.com/drupal7/node/628
+https://people.cs.clemson.edu/~goddard/texts/theoryOfComputation/3a.pdf
+https://www.tutorialspoint.com/automata_theory/constructing_fa_from_re.htm
+
+
+
