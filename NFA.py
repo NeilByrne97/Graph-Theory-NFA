@@ -7,10 +7,10 @@
 def shunt(infix): # Shunting Yard Algorithm - Parses infix notation to postfix notionation
     
     specials = {'*': 50, 
-				'+': 40,
-				'?': 30, 
-				'.': 20, 
-				'|': 10}   #Operators
+				'+': 45,
+				'?': 40, 
+				'.': 35, 
+				'|': 30}   #Operators
     pofix = ""
     stack = ""
 
@@ -22,17 +22,17 @@ def shunt(infix): # Shunting Yard Algorithm - Parses infix notation to postfix n
                 pofix = pofix + stack [-1]
                 stack = stack[:-1]
             stack = stack [:-1]
-        elif c in specials:
+        elif c in specials:	# If special char pop the operators of lower precedence and push to special char to stack
             while stack and specials.get(c, 0) <= specials.get(stack[-1], 0):
                 pofix, stack = pofix + stack[-1], stack [:-1]
             stack = stack + c
-        else:
+        else:	# Regular chars are pushed normaly 
             pofix = pofix + c
 
-    while stack:
+    while stack:	# Add symbol from top of stack to the pofix string 
         pofix, stack = pofix + stack[-1], stack [:-1]
     return pofix
-print (shunt("(a.b)|(c*.d)"))
+##print (shunt("(a.b)|(c*.d)"))
 
 
 
@@ -41,7 +41,7 @@ class state: # Thompson's Constuction - Turn regular expressions into non determ
     edge1 = None
     edge2 = None
 
-class nfa:
+class nfa:	# NFA's will be created from this
     initial = None
     accept = None
 
@@ -137,46 +137,48 @@ def compile(postfix):
 			newnfa = nfa(initial, accept)
 			nfastack.append(newnfa)
 
-	return nfastack.pop()
+	return nfastack.pop()	# Only one state should be left to pop at this point
 
 """Returns the set of states that can be reached from the current state following its edges"""
 def followEdges(state):
-	state = set()
+	state = set()	# Create new set with state as its only element
 	states.add(state)
 	
-	if state.label is None:
-		if state.edge1 is not None:
-			states |= followes(state.edge2)
-		if state.edge2 is not None:
-			states |= followEdges(state.edge2)	
+	if state.label is None:	# If states label is special
+		if state.edge1 is not None:	# If edge1 is pointing at a state
+			states |= followEdges(state.edge1)	# Follow this edge
+		if state.edge2 is not None:	# If edge2 is poiting at a state
+			states |= followEdges(state.edge2)	# Follow this edge
 	return states
 	
+"""Matches output string to infix regualr expression"""
 def match(infix, string):
-	postfix = shunt(infix)
+	postfix = shunt(infix)	# Shunt the regular expression
 	nfa = compile(postfix)
+	# Sets to save the states
 	current = set()
 	next = set()
 	
-	current |= followEdges(nfa.initial)
+	current |= followEdges(nfa.initial)	# Concat the initial and current state
 	
-	for s in string:
-		for c in current:
-			if c.label == s:
-				next |= followEdges(c.edge1)
-		current = next
-		next = set()
+	for s in string:	# Loop through each char of string
+		for c in current:	# Loop through current set of states
+			if c.label == s
+				next |= followEdges(c.edge1)	# Concat edge1 to the next set
+		current = next	# Set the current set to the next set
+		next = set()	# Clear the next set
 		
-	return(nfa.accept in current)
+	return(nfa.accept in current)	# Check if accept state is in the set of current set
 		
 	
 	
-	
-
-
-
-
-
-
+##	Testing	##	
+print('TESTING - SHUNTING YARD ALGORITHM - TESTING')
+print(shunt('A+B+C'))
+print(shunt('A+B*C'))
+print(shunt('A*(B+C)'))
+print(shunt('A+B-C'))
+print(shunt('A.B|C'))
 
 
 
