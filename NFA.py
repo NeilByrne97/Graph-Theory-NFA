@@ -139,6 +139,7 @@ def compile(postfix):
 
 	return nfastack.pop()
 
+"""Returns the set of states that can be reached from the current state following its edges"""
 def followEdges(state):
 	state = set()
 	states.add(state)
@@ -147,12 +148,26 @@ def followEdges(state):
 		if state.edge1 is not None:
 			states |= followes(state.edge2)
 		if state.edge2 is not None:
-			states |= followEdges(state.edge2)
-			
-			
+			states |= followEdges(state.edge2)	
 	return states
 	
+def match(infix, string):
+	postfix = shunt(infix)
+	nfa = compile(postfix)
+	current = set()
+	next = set()
 	
+	current |= followEdges(nfa.initial)
+	
+	for s in string:
+		for c in current:
+			if c.label == s:
+				next |= followEdges(c.edge1)
+		current = next
+		next = set()
+		
+	return(nfa.accept in current)
+		
 	
 	
 	
