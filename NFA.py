@@ -50,7 +50,7 @@ class nfa:
         self.accept = accept
 
 def compile(postfix):
-    nfastack = []
+	nfastack = []
 	for c in postfix:
 		if c == '.':
 			#Pop two NFA's off the stack
@@ -59,8 +59,9 @@ def compile(postfix):
 			# Connect first NFA's accept state to the seconds initial
 			nfa1.accept.edge1 = nfa2.initial
 			# Push NFA to the stack
-			nfastack.append(nfa(nfa1.initial, nfa2.accept))
-
+			newnfa = nfa(initial, accept)
+			nfastack.append(newnfa)	
+			
 		elif c == '|':
 			# Pop two NFA's off the stack'
 			nfa2 = nfastack.pop()
@@ -76,7 +77,8 @@ def compile(postfix):
 			nfa1.accept.edge1 = accept
 			nfa2.accept.edge1 = accept
 			# Push new NFA to the stack
-			nfastack.append(nfa(initial, accept))
+			newnfa = nfa(initial, accept)
+			nfastack.append(newnfa)
 
 		elif c == '*':
 			# Pop a single NFA from the stack
@@ -91,7 +93,8 @@ def compile(postfix):
 			nfa1.accept.edge1 = nfa1.initial
 			nfa1.accept.edge2 = accept
 			# Push new NFA to the stack
-			nfastack.append(nfa(initial, accept))
+			newnfa = nfa(initial, accept)
+			nfastack.append(newnfa)
 
 		elif c == '+':
 			# Pop a single NFA from the stack
@@ -105,7 +108,8 @@ def compile(postfix):
 			nfa.accept.edge1 = nfa.initial
 			nfa.accept.edge2 = accept
 			# Push new NFA to the stack
-			nfastack.append(nfa(initial,accept))
+			newnfa = nfa(initial, accept)
+			nfastack.append(newnfa)
 
 		elif c == '?':
 			# Pop only one NFA off the stack for the '?' operator
@@ -119,7 +123,8 @@ def compile(postfix):
 			# Connect the nfa accept state to the new accept state
 			nfa.accept.edge1 = accept
 			# Create and push a new '?' NFA to the nfaStack
-			nfastack.append(nfa(initial,accept))
+			newnfa = nfa(initial, accept)
+			nfastack.append(newnfa)
 
 		else:
 			# Create new initial accept states
@@ -129,10 +134,11 @@ def compile(postfix):
 			initial.label = c
 			initial.edge1 = accept
 			# Push new NFA to the stack
-			nfastack.append(nfa(initial, accept))
+			newnfa = nfa(initial, accept)
+			nfastack.append(newnfa)
 
 	return nfastack.pop()
 
-print(compile("ab.cd.|"))
-print(compile("aa.*"))
+##print(compile("ab.cd.|"))
+##print(compile("aa.*"))
 
