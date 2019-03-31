@@ -7,18 +7,18 @@
 def shunt(infix): # Shunting Yard Algorithm - Parses infix notation to postfix notionation
     
     specials = {'*': 50, 
-				'.': 40,
-				'|': 30, 
-				'+': 20, 
-				'?': 10}   #Operators
+				'+': 40,
+				'?': 30, 
+				'.': 20, 
+				'|': 10}   #Operators
     pofix = ""
     stack = ""
 
     for c in infix: # Read infix char at a time
-        if c == '(':
+        if c == '(':	# If open bracket push to the stack
             stack = stack + c
-        elif c == ")":
-            while stack[-1] != '(':
+        elif c == ")":	# If closing bracket, pop from the stack
+            while stack[-1] != '(':	# Keep poping from stack until open bracket then  pop
                 pofix = pofix + stack [-1]
                 stack = stack[:-1]
             stack = stack [:-1]
@@ -139,6 +139,35 @@ def compile(postfix):
 
 	return nfastack.pop()
 
-##print(compile("ab.cd.|"))
-##print(compile("aa.*"))
+def followEdges(state):
+	state = set()
+	states.add(state)
+	
+	if state.label is None:
+		if state.edge1 is not None:
+			states |= followes(state.edge2)
+		if state.edge2 is not None:
+			states |= followEdges(state.edge2)
+			
+			
+	return states
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
